@@ -12,6 +12,7 @@ function ArticleCard() {
       <Typography variant="h2" component="h1" sx={{ color: "#004643" }}>
         All Articles
       </Typography>
+      <p>hello</p>
     </header>
   );
 }
