@@ -2,12 +2,10 @@ import { Typography } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import ListSubheader from "@mui/material/ListSubheader";
 import IconButton from "@mui/material/IconButton";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { fetchArticles } from "../../api";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 function Articles() {
   const [articlesData, setArticlesData] = useState([]);
@@ -25,8 +23,6 @@ function Articles() {
           All Articles
         </Typography>
       </header>
-      <ul id="articles-list"></ul>
-
       <ImageList sx={{ width: "flex", height: "flex", maxWidth: 5000 }}>
         {articlesData.map((article) => (
           <ImageListItem key={article.article_id} cols={2}>
@@ -44,7 +40,9 @@ function Articles() {
                   sx={{ color: "rgba(255, 255, 255, 0.54)" }}
                   aria-label={`read ${article.title}`}
                 >
-                  <ReadMoreIcon />
+                  <a href={``}>
+                    <ReadMoreIcon />
+                  </a>
                 </IconButton>
               }
             />

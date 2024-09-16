@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import "./App.css";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import Articles from "./components/Articles";
@@ -10,6 +9,7 @@ import Login from "./components/Login";
 import UserProfile from "./components/UserProfile";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid2";
+import ArticleCard from "./components/ArticleCard";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -46,6 +46,7 @@ function App() {
         <Route path="/articles" element={<Articles />} />
         <Route path="/" element={<Login />} />
         <Route path="/:user_id" element={<UserProfile />} />
+        <Route path="/articles/:article_id" element={<ArticleCard />} />
       </Routes>
     </>
   );
