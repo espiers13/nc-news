@@ -19,13 +19,22 @@ function Articles() {
   return (
     <>
       <header>
-        <Typography variant="h2" component="h1" sx={{ color: "#004643" }}>
+        <Typography variant="h2" component="h1" sx={{ color: "#33272a" }}>
           All Articles
         </Typography>
       </header>
-      <ImageList sx={{ width: "flex", height: "flex", maxWidth: 5000 }}>
+      <ImageList
+        cols={1}
+        gap={15}
+        sx={{
+          width: "flex",
+          height: "flex",
+          maxWidth: 5000,
+          p: 10,
+        }}
+      >
         {articlesData.map((article) => (
-          <ImageListItem key={article.article_id} cols={2}>
+          <ImageListItem key={article.article_id} cols={1}>
             <img
               srcSet={article.article_img_url}
               src={article.article_img_url}
@@ -36,11 +45,8 @@ function Articles() {
               title={article.title}
               subtitle={`${article.author}`}
               actionIcon={
-                <IconButton
-                  sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                  aria-label={`read ${article.title}`}
-                >
-                  <a href={``}>
+                <IconButton aria-label={`read ${article.title}`}>
+                  <a href={`/articles/${article.article_id}`}>
                     <ReadMoreIcon />
                   </a>
                 </IconButton>
