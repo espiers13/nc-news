@@ -14,20 +14,26 @@ function Header() {
     color: theme.palette.text.secondary,
     ...theme.applyStyles("dark", {
       backgroundColor: "#1A2027",
+      size: "100vw",
+      minWidth: "95%",
     }),
   }));
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, minWidth: "95%" }}>
       <Grid container spacing={1}>
         <Grid size={100}>
           <header id="header">
-            <Typography variant="h1" component="h1" sx={{ color: "#33272a" }}>
+            <Typography
+              variant="h1"
+              component="h1"
+              sx={{ color: "#33272a", minWidth: "95%" }}
+            >
               NC News
             </Typography>
           </header>
         </Grid>
         <Grid size="grow">
-          <Banner>
+          <Banner sx={{ margin: 5 }}>
             <Nav />
           </Banner>
         </Grid>

@@ -1,7 +1,6 @@
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -9,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 
 function CommentCard({ author, body, date, votes }) {
   return (
-    <Card sx={{ minWidth: 275, maxWidth: "95%", bgcolor: "#fffffe" }}>
+    <Card sx={{ maxWidth: "95%", bgcolor: "#fffffe" }}>
       <CardContent>
         <Typography gutterBottom sx={{ color: "text.secondary", fontSize: 14 }}>
           {author}

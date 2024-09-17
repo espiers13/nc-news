@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { fetchArticleById } from "../../api";
+import { fetchArticleById, upVote, downVote } from "../../api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
@@ -21,10 +21,22 @@ function ArticlePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState("Comments");
   const [article, setArticle] = useState({});
+  const [votes, setVotes] = useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(article_id);
+
+  const handleUpVote = (event) => {
+    const article_id = article.article_id;
+    upVote(article_id);
+    fetchArticleById(article_id).then((article) => {
+      setVotes(article.votes);
+    });
+  };
+  const handleDownVote = (event, article_id) => {};
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#ffc6c7",
@@ -41,6 +53,7 @@ function ArticlePage() {
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
       setArticle(article);
+      setVotes(article.votes);
       setIsLoading(false);
     });
   }, []);
@@ -80,13 +93,18 @@ function ArticlePage() {
       </Box>
 
       <Item sx={{ maxWidth: "95%", margin: 5 }}>
-        <IconButton aria-label="like" color="success">
+        <IconButton
+          aria-label="like"
+          color="success"
+          article_id={article_id}
+          onClick={handleUpVote}
+        >
           <ThumbUpIcon />
         </IconButton>
-        <IconButton aria-label="dislike" color="error">
+        <IconButton aria-label="dislike" color="error" onClick={handleDownVote}>
           <ThumbDownIcon />
         </IconButton>
-        {`${article.votes} likes`}
+        {`${votes} likes`}
       </Item>
 
       <Box sx={{ width: "100%", typography: "body1", p: 3 }}>
