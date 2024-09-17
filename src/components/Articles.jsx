@@ -9,17 +9,34 @@ import { useEffect, useState } from "react";
 
 function Articles() {
   const [articlesData, setArticlesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchArticles().then((articles) => {
       setArticlesData(articles);
+      setIsLoading(false);
     });
   }, []);
+
+  if (isLoading) {
+    return (
+      <div id="loading">
+        <Typography variant="body1" gutterBottom>
+          Loading...
+        </Typography>
+      </div>
+    );
+  }
 
   return (
     <>
       <header>
-        <Typography variant="h2" component="h1" sx={{ color: "#33272a" }}>
+        <Typography
+          variant="h2"
+          component="h1"
+          sx={{ color: "#33272a", marginTop: 5 }}
+        >
           All Articles
         </Typography>
       </header>
@@ -30,7 +47,7 @@ function Articles() {
           width: "flex",
           height: "flex",
           maxWidth: 5000,
-          p: 10,
+          p: 2,
         }}
       >
         {articlesData.map((article) => (
