@@ -20,10 +20,18 @@ function Comments({ article_id }) {
   if (isLoading) {
     return (
       <div id="loading">
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Loading...
         </Typography>
       </div>
+    );
+  }
+
+  if (!articleComments.length) {
+    return (
+      <Typography variant="body1" color="#594a4e">
+        No comments to display
+      </Typography>
     );
   }
 

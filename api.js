@@ -25,3 +25,29 @@ export const fetchAllComments = (article_id) => {
     return data;
   });
 };
+
+export const upVote = (article_id) => {
+  return ncNewsApi
+    .patch(`/articles/${article_id}`, {
+      inc_votes: 1,
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const downVote = (article_id) => {
+  return ncNewsApi
+    .patch(`/articles/${article_id}`, {
+      inc_votes: -1,
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

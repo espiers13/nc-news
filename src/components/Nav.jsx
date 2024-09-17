@@ -22,6 +22,8 @@ function Nav() {
         flexDirection: "column",
         alignItems: "center",
         border: "none",
+        minWidth: "95%",
+        width: "grow",
       }}
     >
       <ButtonGroup size="large" aria-label="Navigation Bar">
