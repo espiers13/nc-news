@@ -22,7 +22,7 @@ function Articles() {
   if (isLoading) {
     return (
       <div id="loading">
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Loading...
         </Typography>
       </div>
