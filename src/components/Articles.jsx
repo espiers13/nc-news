@@ -7,7 +7,7 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { fetchArticles } from "../../api";
 import { useEffect, useState } from "react";
 
-function Articles() {
+function Articles({ loggedInUser }) {
   const [articlesData, setArticlesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 

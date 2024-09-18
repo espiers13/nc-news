@@ -32,10 +32,7 @@ export const upVote = (article_id) => {
       inc_votes: 1,
     })
     .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
+      return response.data.votes;
     });
 };
 
@@ -45,9 +42,21 @@ export const downVote = (article_id) => {
       inc_votes: -1,
     })
     .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
+      return response.data.votes;
     });
+};
+
+export const postComment = (article_id, commentData) => {
+  return ncNewsApi
+    .post(`/articles/${article_id}/comments`, commentData)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const fetchAllUsers = () => {
+  return ncNewsApi.get(`/users`).then(({ data }) => {
+    // console.log(data.users);
+    return data.users;
+  });
 };
