@@ -4,9 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 
-function CommentCard({ author, body, date, votes }) {
+function CommentCard({ author, body, date, votes, loggedInUser }) {
+  const [deleteButton, setDeleteButton] = useState(true);
+
   return (
     <Card sx={{ maxWidth: "95%", bgcolor: "#fffffe" }}>
       <CardContent>
@@ -27,6 +31,9 @@ function CommentCard({ author, body, date, votes }) {
         </IconButton>
         <IconButton aria-label="dislike" color="error">
           <ThumbDownIcon />
+        </IconButton>
+        <IconButton aria-label="delete" size="large" disabled={deleteButton}>
+          <DeleteIcon />
         </IconButton>
       </CardActions>
     </Card>

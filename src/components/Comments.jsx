@@ -5,7 +5,7 @@ import CommentCard from "./CommentCard";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 
-function Comments({ article_id }) {
+function Comments({ article_id, loggedInUser }) {
   const [articleComments, setArticleComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,6 +46,7 @@ function Comments({ article_id }) {
               date={Date(comment.created_at)}
               votes={comment.votes}
               key={comment.comment_id}
+              loggedInUser={loggedInUser}
             />
           );
         })}
