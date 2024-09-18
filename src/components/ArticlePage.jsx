@@ -2,21 +2,18 @@ import { Typography } from "@mui/material";
 import { fetchArticleById, upVote, downVote } from "../../api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import IconButton from "@mui/material/IconButton";
-import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Comments from "./Comments";
 import WriteComment from "./WriteComment";
+import { Button, Box, Paper, IconButton, Tab, Link } from "@mui/material";
 
-function ArticlePage() {
+function ArticlePage({ loggedInUser }) {
   const { article_id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState("Comments");
@@ -27,25 +24,27 @@ function ArticlePage() {
     setValue(newValue);
   };
 
-  console.log(article_id);
-
   const handleUpVote = (event) => {
     const article_id = article.article_id;
-    upVote(article_id);
-    fetchArticleById(article_id).then((article) => {
-      setVotes(article.votes);
+    upVote(article_id).then((votes) => {
+      setVotes(votes);
     });
   };
-  const handleDownVote = (event, article_id) => {};
+  const handleDownVote = (event) => {
+    const article_id = article.article_id;
+    downVote(article_id).then((votes) => {
+      setVotes(votes);
+    });
+  };
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "#ffc6c7",
+    backgroundColor: "#00473e",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
-    color: theme.palette.text.secondary,
+    color: "#f2f7f5",
     ...theme.applyStyles("dark", {
-      backgroundColor: "#1A2027",
+      backgroundColor: "#00473e",
     }),
   }));
 
@@ -68,10 +67,12 @@ function ArticlePage() {
     );
   }
 
+  const articleDate = new Date(article.created_at).toDateString();
+
   return (
     <>
       <header id="header">
-        <Typography variant="h2" component="h1" sx={{ color: "#33272a" }}>
+        <Typography variant="h2" component="h1">
           {article.title}
         </Typography>
         <img src={article.article_img_url} />
@@ -79,10 +80,17 @@ function ArticlePage() {
       <Box sx={{ flexGrow: 1, margin: 5 }}>
         <Grid container spacing={2}>
           <Grid size="grow">
-            <Item>{`author: ${article.author}`}</Item>
+            <Item>
+              <a href="/" underline="none">
+                Return to all articles
+              </a>
+            </Item>
           </Grid>
           <Grid size="grow">
-            <Item>{Date(article.created_at)}</Item>
+            <Item>{`Author: ${article.author}`}</Item>
+          </Grid>
+          <Grid size="grow">
+            <Item>{`Date Created: ${articleDate}`}</Item>
           </Grid>
         </Grid>
       </Box>
@@ -119,7 +127,7 @@ function ArticlePage() {
             <Comments article_id={article_id} />
           </TabPanel>
           <TabPanel value="WriteComment">
-            <WriteComment />
+            <WriteComment article_id={article_id} loggedInUser={loggedInUser} />
           </TabPanel>
         </TabContext>
       </Box>

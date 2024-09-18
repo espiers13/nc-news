@@ -45,6 +45,7 @@ function Comments({ article_id }) {
               body={comment.body}
               date={Date(comment.created_at)}
               votes={comment.votes}
+              key={comment.comment_id}
             />
           );
         })}

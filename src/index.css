@@ -15,11 +15,15 @@
 
 a {
   font-weight: 500;
-  color: #f2f7f5;
+  color: #faae2b;
   text-decoration: inherit;
 }
 a:hover {
-  color: #001e1d;
+  color: #f2f7f5;
+}
+
+#user-select {
+  width: 500px;
 }
 
 body {
@@ -28,27 +32,29 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #faeee7;
+  background-color: #f2f7f5;
 }
 
 #header {
   text-align: center;
   align-items: center;
+  width: 95vw;
+  margin: 5px;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  color: #33272a;
+  color: #00473e;
   text-align: center;
 }
 
 h2 {
-  color: #33272a;
+  color: #475d5b;
 }
 
 h4 {
-  color: #33272a;
+  color: #475d5b;
 }
 
 button {
@@ -58,16 +64,16 @@ button {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  background-color: #ff8ba7;
+  background-color: #00473e;
 }
 button:hover {
-  background-color: #ff8ba7;
+  background-color: #00473e;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto;
   border-color: 001e1d;
-  background-color: #ff8ba7;
+  background-color: #00473e;
 }
 
 #loading {

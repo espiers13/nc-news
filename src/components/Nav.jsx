@@ -4,13 +4,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 
 const buttons = [
   <Button className="button" key="articles">
-    <a href="/articles">Articles</a>
+    <a href="/">Articles</a>
   </Button>,
   <Button className="button" key="my-profile">
     <a href="/:user_id">My Profile</a>
-  </Button>,
-  <Button className="button" key="change-user">
-    <a href="/">Change User</a>
   </Button>,
 ];
 
