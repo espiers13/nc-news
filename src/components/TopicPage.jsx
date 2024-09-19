@@ -1,25 +1,24 @@
-import { Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Typography, Box, Button, ButtonGroup } from "@mui/material";
+import { fetchArticlesByTopic } from "../../api";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import IconButton from "@mui/material/IconButton";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
-import { fetchArticles } from "../../api";
-import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 
-function Articles({ loggedInUser, topics }) {
+function TopicPage(topics) {
+  const { topic } = useParams();
   const [articlesData, setArticlesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const allTopics = topics;
+  const allTopics = topics.topics;
 
   useEffect(() => {
     setIsLoading(true);
-    fetchArticles().then((articles) => {
+    fetchArticlesByTopic(topic).then((articles) => {
       setArticlesData(articles);
       setIsLoading(false);
     });
@@ -43,7 +42,7 @@ function Articles({ loggedInUser, topics }) {
           component="h1"
           sx={{ color: "#33272a", marginTop: 5 }}
         >
-          All Articles
+          {`All articles about: ${topic}`}
         </Typography>
         <Typography
           variant="h5"
@@ -74,7 +73,6 @@ function Articles({ loggedInUser, topics }) {
                   color="#00473e"
                   aria-label={topic.slug}
                   key={topic.slug}
-                  disabled={false}
                 >
                   <a href={`/${topic.slug}`}>{topic.slug}</a>
                 </Button>
@@ -83,6 +81,7 @@ function Articles({ loggedInUser, topics }) {
           </ButtonGroup>
         </Box>
       </Box>
+
       <ImageList
         cols={1}
         gap={15}
@@ -119,4 +118,4 @@ function Articles({ loggedInUser, topics }) {
   );
 }
 
-export default Articles;
+export default TopicPage;

@@ -1,17 +1,18 @@
 import { postComment } from "../../api";
 import { useState } from "react";
 import { FormHelperText, TextField, Button, Box } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function WriteComment({ loggedInUser, article_id }) {
   const [newComment, setNewComment] = useState("");
   const [returnedComment, setReturnedComment] = useState("");
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const currentArticle_id = article_id;
 
   const handleComment = (event) => {
     const comment = event.target.value;
     setNewComment(comment);
-    location.reload();
   };
 
   const handleSubmit = (event) => {
@@ -20,6 +21,7 @@ function WriteComment({ loggedInUser, article_id }) {
       body: newComment,
     };
     setButtonPressed(true);
+
     postComment(currentArticle_id, commentData).then((comment) => {
       setReturnedComment(comment.body);
     });
@@ -60,14 +62,15 @@ function WriteComment({ loggedInUser, article_id }) {
         alignItems="center"
         justifyContent="center"
       >
-        <Button
+        <LoadingButton
           variant="contained"
           sx={{ bgcolor: "#ff8ba7" }}
+          loading={isLoading}
           disabled={buttonPressed}
           onClick={handleSubmit}
         >
           Submit
-        </Button>
+        </LoadingButton>
       </Box>
     </>
   );

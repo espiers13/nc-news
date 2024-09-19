@@ -2,21 +2,16 @@ import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Articles from "./components/Articles";
 import ArticlePage from "./components/ArticlePage";
+import TopicPage from "./components/TopicPage";
 import { UserContext } from "./components/contexts/UsersContext";
-import {
-  InputLabel,
-  Typography,
-  Box,
-  MenuItem,
-  FormControl,
-  Select,
-} from "@mui/material";
+import { InputLabel, Typography, Box, MenuItem, Select } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import { fetchAllUsers } from "../api";
+import { fetchAllUsers, fetchAllTopics } from "../api";
 import "./App.css";
 
 function App() {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const [topics, setTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [loginMsg, setLoginMsg] = useState(`You are logged in as tickle122`);
@@ -25,6 +20,14 @@ function App() {
     setLoggedInUser(event.target.value);
     setLoginMsg(`You are logged in as ${event.target.value}`);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchAllTopics().then((topics) => {
+      setTopics(topics);
+      setIsLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -106,22 +109,18 @@ function App() {
         </Select>
       </Box>
       <Routes>
-        <Route path="/" element={<Articles loggedInUser={loggedInUser} />} />
+        <Route
+          path="/"
+          element={<Articles loggedInUser={loggedInUser} topics={topics} />}
+        />
         <Route
           path="/articles/:article_id"
           element={<ArticlePage loggedInUser={loggedInUser} />}
         />
+        <Route path="/:topic" element={<TopicPage topics={topics} />} />
       </Routes>
     </>
   );
 }
 
 export default App;
-
-// {allUsers.map((user) => {
-//   return (
-//     <MenuItem key={user.username} value={user.username}>
-//       {user.username}
-//     </MenuItem>
-//   );
-// })}

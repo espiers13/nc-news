@@ -6,10 +6,20 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { deleteComment } from "../../api";
 import { MenuItem, Menu, Button, Fab, Card } from "@mui/material";
 
-function CommentCard({ author, body, date, votes, comment_id }) {
+function CommentCard({
+  author,
+  body,
+  date,
+  votes,
+  comment_id,
+  setArticleComments,
+  articleComments,
+}) {
   const handleDelete = (event) => {
     deleteComment(comment_id).then(() => {
-      location.reload();
+      setArticleComments(
+        articleComments.filter((comment) => comment.comment_id !== comment_id)
+      );
     });
   };
 
