@@ -8,14 +8,17 @@ import { fetchArticles } from "../../api";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import ArticlesHeader from "./ArticlesHeader";
+import ToggleButton from "@mui/material/ToggleButton";
+import { fetchArticlesSortBy } from "../../api";
+import Stack from "@mui/material/Stack";
 
 function Articles({ loggedInUser, topics }) {
+  const allTopics = topics;
   const [articlesData, setArticlesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const allTopics = topics;
+  const [query, setQuery] = useState("created_at");
+  const [order, setOrder] = useState("asc");
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,6 +27,20 @@ function Articles({ loggedInUser, topics }) {
       setIsLoading(false);
     });
   }, []);
+
+  const handleOrder = (event) => {
+    setOrder(event.target.value);
+    fetchArticlesSortBy(query, order).then((response) => {
+      setArticlesData(response);
+    });
+  };
+
+  const handleSortBy = (event) => {
+    setQuery(event.target.value);
+    fetchArticlesSortBy(query, order).then((response) => {
+      setArticlesData(response);
+    });
+  };
 
   if (isLoading) {
     return (
@@ -37,52 +54,52 @@ function Articles({ loggedInUser, topics }) {
 
   return (
     <>
-      <header>
-        <Typography
-          variant="h2"
-          component="h1"
-          sx={{ color: "#33272a", marginTop: 5 }}
-        >
-          All Articles
-        </Typography>
-        <Typography
-          variant="h5"
-          component="h1"
-          sx={{ color: "#33272a", marginTop: 5 }}
-        >
-          View By Topic
-        </Typography>
-      </header>
-      <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <ButtonGroup
-            aria-label="Topics Menu"
-            fullWidth
-            sx={{ backgroundColor: "#00473e" }}
-          >
-            {allTopics.map((topic) => {
-              return (
-                <Button
-                  label={topic.slug}
-                  color="#00473e"
-                  aria-label={topic.slug}
-                  key={topic.slug}
-                  disabled={false}
-                >
-                  <a href={`/${topic.slug}`}>{topic.slug}</a>
-                </Button>
-              );
-            })}
-          </ButtonGroup>
-        </Box>
+      <ArticlesHeader topics={allTopics} />
+
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Typography component="h1">Filter By:</Typography>
       </Box>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        justifyContent="center"
+      >
+        <ToggleButton onClick={handleSortBy} value="created_at">
+          Date
+        </ToggleButton>
+        <ToggleButton onClick={handleSortBy} value="comment_count">
+          Comment Count
+        </ToggleButton>
+        <ToggleButton onClick={handleSortBy} value="votes">
+          Votes
+        </ToggleButton>
+      </Stack>
+
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Typography component="h1">Order By:</Typography>
+      </Box>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        justifyContent="center"
+      >
+        <ToggleButton onClick={handleOrder} value="asc">
+          Ascending
+        </ToggleButton>
+        <ToggleButton onClick={handleOrder} value="desc">
+          Descending
+        </ToggleButton>
+      </Stack>
+
+      <Typography
+        variant="h2"
+        component="h1"
+        sx={{ color: "#33272a", marginTop: 5 }}
+      >
+        All Topics
+      </Typography>
       <ImageList
         cols={1}
         gap={15}
@@ -103,7 +120,10 @@ function Articles({ loggedInUser, topics }) {
             />
             <ImageListItemBar
               title={article.title}
-              subtitle={`${article.author}`}
+              subtitle={`author: ${article.author}
+              written: ${new Date(article.created_at).toDateString()} votes: ${
+                article.votes
+              }`}
               actionIcon={
                 <IconButton aria-label={`read ${article.title}`}>
                   <a href={`/articles/${article.article_id}`}>

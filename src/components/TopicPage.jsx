@@ -8,16 +8,19 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import IconButton from "@mui/material/IconButton";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import CircularProgress from "@mui/material/CircularProgress";
+import ArticlesHeader from "./ArticlesHeader";
 
 function TopicPage(topics) {
   const { topic } = useParams();
   const [articlesData, setArticlesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentTopic, setCurrentTopic] = useState("All Articles");
 
   const allTopics = topics.topics;
 
   useEffect(() => {
     setIsLoading(true);
+    setCurrentTopic(`Articles about: ${topic}`);
     fetchArticlesByTopic(topic).then((articles) => {
       setArticlesData(articles);
       setIsLoading(false);
@@ -42,7 +45,7 @@ function TopicPage(topics) {
           component="h1"
           sx={{ color: "#33272a", marginTop: 5 }}
         >
-          {`All articles about: ${topic}`}
+          {currentTopic}
         </Typography>
         <Typography
           variant="h5"
@@ -78,6 +81,14 @@ function TopicPage(topics) {
                 </Button>
               );
             })}
+            <Button
+              label="All Articles"
+              color="#00473e"
+              aria-label="All Articles"
+              key="All Articles"
+            >
+              <a href={`/`}>All Articles</a>
+            </Button>
           </ButtonGroup>
         </Box>
       </Box>
