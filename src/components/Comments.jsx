@@ -4,8 +4,9 @@ import { Typography } from "@mui/material";
 import CommentCard from "./CommentCard";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 
-function Comments({ article_id }) {
+function Comments({ article_id, loggedInUser }) {
   const [articleComments, setArticleComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,11 +20,9 @@ function Comments({ article_id }) {
 
   if (isLoading) {
     return (
-      <div id="loading">
-        <Typography variant="h4" gutterBottom>
-          Loading...
-        </Typography>
-      </div>
+      <Box alignContent="center" sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
@@ -45,7 +44,9 @@ function Comments({ article_id }) {
               body={comment.body}
               date={Date(comment.created_at)}
               votes={comment.votes}
+              comment_id={comment.comment_id}
               key={comment.comment_id}
+              loggedInUser={loggedInUser}
             />
           );
         })}
