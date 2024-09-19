@@ -1,17 +1,18 @@
 import { Typography } from "@mui/material";
-import { fetchArticleById, upVote, downVote } from "../../api";
+import { fetchArticleById, voteFunc } from "../../api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Comments from "./Comments";
 import WriteComment from "./WriteComment";
 import { Button, Box, Paper, IconButton, Tab, Link } from "@mui/material";
+import Fab from "@mui/material/Fab";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Tabs from "@mui/material/Tabs";
 
 function ArticlePage({ loggedInUser }) {
   const { article_id } = useParams();
@@ -19,22 +20,27 @@ function ArticlePage({ loggedInUser }) {
   const [value, setValue] = useState("Comments");
   const [article, setArticle] = useState({});
   const [votes, setVotes] = useState();
+  const [upVote, setUpVote] = useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleUpVote = (event) => {
+  const handleVote = (event) => {
     const article_id = article.article_id;
-    upVote(article_id).then((votes) => {
-      setVotes(votes);
-    });
-  };
-  const handleDownVote = (event) => {
-    const article_id = article.article_id;
-    downVote(article_id).then((votes) => {
-      setVotes(votes);
-    });
+    console.log(upVote);
+    if (upVote) {
+      voteFunc(article_id, 1).then((votes) => {
+        setUpVote(false);
+        setVotes(votes);
+      });
+    }
+    if (!upVote) {
+      voteFunc(article_id, -1).then((votes) => {
+        setUpVote(true);
+        setVotes(votes);
+      });
+    }
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -100,28 +106,43 @@ function ArticlePage({ loggedInUser }) {
         </Typography>
       </Box>
 
-      <Item sx={{ maxWidth: "95%", margin: 5 }}>
-        <IconButton
-          aria-label="like"
-          color="success"
-          article_id={article_id}
-          onClick={handleUpVote}
-        >
-          <ThumbUpIcon />
-        </IconButton>
-        <IconButton aria-label="dislike" color="error" onClick={handleDownVote}>
-          <ThumbDownIcon />
-        </IconButton>
-        {`${votes} likes`}
-      </Item>
+      <Box
+        sx={{
+          maxWidth: "95%",
+          textAlign: "center",
+          color: "#594a4e",
+          p: 1,
+        }}
+      >
+        <Fab size="small" aria-label="like" onClick={handleVote} color="error">
+          <FavoriteIcon />
+        </Fab>
 
-      <Box sx={{ width: "100%", typography: "body1", p: 3 }}>
+        {`  ${votes} likes`}
+      </Box>
+
+      <Box sx={{ width: "100%", typography: "body1" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="View Comments" value="Comments" />
-              <Tab label="Leave a Comment" value="WriteComment" />
-            </TabList>
+            <Tabs
+              onChange={handleChange}
+              aria-label="comment-tabs"
+              centered={true}
+              value={value}
+              textColor="inherit"
+              indicatorColor="inherit"
+            >
+              <Tab
+                label="View Comments"
+                value="Comments"
+                sx={{ color: "#00473e" }}
+              />
+              <Tab
+                label="Leave a Comment"
+                value="WriteComment"
+                sx={{ color: "#00473e" }}
+              />
+            </Tabs>
           </Box>
           <TabPanel value="Comments">
             <Comments article_id={article_id} />

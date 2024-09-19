@@ -15,7 +15,7 @@
 
 a {
   font-weight: 500;
-  color: #faae2b;
+  color: #abd1c6;
   text-decoration: inherit;
 }
 a:hover {
@@ -67,15 +67,22 @@ button {
   background-color: #00473e;
 }
 button:hover {
-  background-color: #00473e;
+  background-color: #abd1c6;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto;
   border-color: 001e1d;
-  background-color: #00473e;
 }
 
 #loading {
   height: 100vh;
+}
+
+.MuiTab-textColorInherit {
+  color: #00473e;
+}
+
+.MuiTabs-indicator {
+  color: #00473e;
 }

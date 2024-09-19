@@ -9,8 +9,9 @@ function WriteComment({ loggedInUser, article_id }) {
   const currentArticle_id = article_id;
 
   const handleComment = (event) => {
-    let comment = event.target.value;
+    const comment = event.target.value;
     setNewComment(comment);
+    location.reload();
   };
 
   const handleSubmit = (event) => {

@@ -22,7 +22,6 @@ function App() {
   const [loginMsg, setLoginMsg] = useState(`You are logged in as tickle122`);
 
   const handleUser = (event) => {
-    // console.log(event.target.value);
     setLoggedInUser(event.target.value);
     setLoginMsg(`You are logged in as ${event.target.value}`);
   };
@@ -30,7 +29,6 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     fetchAllUsers().then((users) => {
-      // console.log(users, "<--users");
       setAllUsers(users);
       setIsLoading(false);
     });
@@ -40,7 +38,6 @@ function App() {
     return <p>Loading...</p>;
   }
 
-  // const users = [
   //   {
   //     username: "tickle122",
   //     name: "Tom Tickle",
@@ -82,7 +79,6 @@ function App() {
   return (
     <>
       <Header loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
-      {/*NEW STUFF*/}
       <Box alignSelf="center" textAlign="center">
         <Typography
           variant="h5"
@@ -109,7 +105,6 @@ function App() {
           })}
         </Select>
       </Box>
-      {/*NEW STUFF*/}
       <Routes>
         <Route path="/" element={<Articles loggedInUser={loggedInUser} />} />
         <Route
