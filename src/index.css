@@ -72,7 +72,7 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto;
-  border-color: 001e1d;
+  border-color: #00473e;
 }
 
 #loading {

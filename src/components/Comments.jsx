@@ -47,6 +47,8 @@ function Comments({ article_id, loggedInUser }) {
               comment_id={comment.comment_id}
               key={comment.comment_id}
               loggedInUser={loggedInUser}
+              setArticleComments={setArticleComments}
+              articleComments={articleComments}
             />
           );
         })}
