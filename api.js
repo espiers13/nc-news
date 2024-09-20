@@ -14,6 +14,14 @@ export const fetchArticles = () => {
     });
 };
 
+export const fetchArticlesSortBy = (query, order) => {
+  return ncNewsApi
+    .get(`/articles?sort_by=${query}&order=${order}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
 export const fetchArticlesByTopic = (topic) => {
   return ncNewsApi.get(`/articles?topic=${topic}`).then((response) => {
     return response.data;
