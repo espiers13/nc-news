@@ -29,27 +29,31 @@ function ArticlesHeader(topics, topic) {
           <ButtonGroup
             aria-label="Topics Menu"
             fullWidth
-            sx={{ backgroundColor: "#00473e" }}
+            sx={{ backgroundColor: "#004643" }}
           >
             {allTopics.map((topic) => {
               return (
                 <Button
+                  component={Link}
+                  to={`/${topic.slug}`}
                   label={topic.slug}
                   color="#00473e"
                   aria-label={topic.slug}
                   key={topic.slug}
                 >
-                  <a href={`/${topic.slug}`}>{topic.slug}</a>
+                  {topic.slug}
                 </Button>
               );
             })}
             <Button
+              component={Link}
+              to={`/`}
               label="All Articles"
               color="#00473e"
               aria-label="All Articles"
               key="All Articles"
             >
-              <a href={`/`}>All Articles</a>
+              All Articles
             </Button>
           </ButtonGroup>
         </Box>

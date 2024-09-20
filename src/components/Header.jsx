@@ -21,7 +21,14 @@ function Header({ loggedInUser, setLoggedInUser }) {
   }));
 
   return (
-    <Box sx={{ flexGrow: 1, minWidth: "95%" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        minWidth: "95%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <Grid container spacing={1}>
         <Grid size={100}>
           <Banner>
