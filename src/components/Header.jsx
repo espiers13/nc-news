@@ -31,11 +31,6 @@ function Header({ loggedInUser, setLoggedInUser }) {
               </Typography>
             </header>
           </Banner>
-          {/* <Grid size="grow">
-            <Banner sx={{ margin: 1 }}>
-              <Nav />
-            </Banner>
-          </Grid> */}
         </Grid>
       </Grid>
     </Box>

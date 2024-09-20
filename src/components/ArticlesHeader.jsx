@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function ArticlesHeader(topics, topic) {
   const allTopics = topics.topics;

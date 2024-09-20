@@ -10,28 +10,46 @@ export const fetchArticles = () => {
       return response.data;
     })
     .catch((err) => {
-      console.log(err);
+      return err;
     });
 };
 
-export const fetchArticlesSortBy = (query, order) => {
-  return ncNewsApi
-    .get(`/articles?sort_by=${query}&order=${order}`)
-    .then(({ data }) => {
-      return data;
-    });
+export const fetchArticlesSortBy = (query, order, topic) => {
+  if (topic) {
+    return ncNewsApi
+      .get(`/articles?topic=${topic}&sort_by${query}&order=${order}`)
+      .then((response) => {
+        return response.data;
+      });
+  } else {
+    return ncNewsApi
+      .get(`/articles?sort_by=${query}&order=${order}`)
+      .then(({ data }) => {
+        return data;
+      });
+  }
 };
 
 export const fetchArticlesByTopic = (topic) => {
-  return ncNewsApi.get(`/articles?topic=${topic}`).then((response) => {
-    return response.data;
-  });
+  return ncNewsApi
+    .get(`/articles?topic=${topic}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      return err;
+    });
 };
 
 export const fetchArticleById = (article_id) => {
-  return ncNewsApi.get(`/articles/${article_id}`).then(({ data }) => {
-    return data.article;
-  });
+  return ncNewsApi
+    .get(`/articles/${article_id}`)
+    .then(({ data }) => {
+      return data.article;
+    })
+    .catch((err) => {
+      return err;
+    });
 };
 
 export const fetchAllComments = (article_id) => {
@@ -71,7 +89,12 @@ export const fetchAllUsers = () => {
 };
 
 export const fetchAllTopics = () => {
-  return ncNewsApi.get("/topics").then(({ data }) => {
-    return data;
-  });
+  return ncNewsApi
+    .get("/topics")
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
