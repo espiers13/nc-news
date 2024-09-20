@@ -5,14 +5,14 @@ import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
 import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Comments from "./Comments";
 import WriteComment from "./WriteComment";
-import { Button, Box, Paper, IconButton, Tab, Link } from "@mui/material";
+import { Box, Paper, Tab } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tabs from "@mui/material/Tabs";
+import { ArticleError } from "./errors/Errors";
 
 function ArticlePage({ loggedInUser }) {
   const { article_id } = useParams();
@@ -21,6 +21,7 @@ function ArticlePage({ loggedInUser }) {
   const [article, setArticle] = useState({});
   const [votes, setVotes] = useState();
   const [upVote, setUpVote] = useState(true);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -28,7 +29,6 @@ function ArticlePage({ loggedInUser }) {
 
   const handleVote = (event) => {
     const article_id = article.article_id;
-    console.log(upVote);
     if (upVote) {
       voteFunc(article_id, 1).then((votes) => {
         setUpVote(false);
@@ -57,11 +57,18 @@ function ArticlePage({ loggedInUser }) {
   useEffect(() => {
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
+      if (article.status) {
+        setErrorAlert(true);
+      }
       setArticle(article);
       setVotes(article.votes);
       setIsLoading(false);
     });
   }, []);
+
+  if (errorAlert) {
+    return <ArticleError />;
+  }
 
   if (isLoading) {
     return (

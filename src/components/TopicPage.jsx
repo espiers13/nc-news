@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Typography, Box, Button, ButtonGroup } from "@mui/material";
+import { Typography, Box, Button, ButtonGroup, Stack } from "@mui/material";
+import ToggleButton from "@mui/material/ToggleButton";
 import { fetchArticlesByTopic } from "../../api";
+import { fetchArticlesSortBy } from "../../api";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -9,23 +11,48 @@ import IconButton from "@mui/material/IconButton";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArticlesHeader from "./ArticlesHeader";
+import { PathwayError } from "./errors/Errors";
 
 function TopicPage(topics) {
   const { topic } = useParams();
   const [articlesData, setArticlesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTopic, setCurrentTopic] = useState("All Articles");
+  const [currentTopic, setCurrentTopic] = useState("");
+  const [query, setQuery] = useState("created_at");
+  const [order, setOrder] = useState("asc");
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const allTopics = topics.topics;
 
   useEffect(() => {
     setIsLoading(true);
-    setCurrentTopic(`Articles about: ${topic}`);
+    setCurrentTopic(topic);
     fetchArticlesByTopic(topic).then((articles) => {
+      if (articles.status) {
+        setErrorAlert(true);
+      }
       setArticlesData(articles);
       setIsLoading(false);
     });
   }, []);
+
+  const handleOrder = (event) => {
+    setOrder(event.target.value);
+    fetchArticlesSortBy(query, order, topic).then((response) => {
+      setArticlesData(response);
+    });
+  };
+
+  const handleSortBy = (event) => {
+    setQuery(event.target.value);
+    fetchArticlesSortBy(query, order, topic).then((response) => {
+      setArticlesData(response);
+    });
+  };
+
+  if (errorAlert) {
+    return <PathwayError />;
+  }
 
   if (isLoading) {
     return (
@@ -39,59 +66,43 @@ function TopicPage(topics) {
 
   return (
     <>
-      <header>
-        <Typography
-          variant="h2"
-          component="h1"
-          sx={{ color: "#33272a", marginTop: 5 }}
-        >
-          {currentTopic}
-        </Typography>
-        <Typography
-          variant="h5"
-          component="h1"
-          sx={{ color: "#33272a", marginTop: 5 }}
-        >
-          View By Topic
-        </Typography>
-      </header>
-      <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <ButtonGroup
-            aria-label="Topics Menu"
-            fullWidth
-            sx={{ backgroundColor: "#00473e" }}
-          >
-            {allTopics.map((topic) => {
-              return (
-                <Button
-                  label={topic.slug}
-                  color="#00473e"
-                  aria-label={topic.slug}
-                  key={topic.slug}
-                >
-                  <a href={`/${topic.slug}`}>{topic.slug}</a>
-                </Button>
-              );
-            })}
-            <Button
-              label="All Articles"
-              color="#00473e"
-              aria-label="All Articles"
-              key="All Articles"
-            >
-              <a href={`/`}>All Articles</a>
-            </Button>
-          </ButtonGroup>
-        </Box>
+      <ArticlesHeader topics={allTopics} />
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Typography component="h1">Filter By:</Typography>
       </Box>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        justifyContent="center"
+      >
+        <ToggleButton onClick={handleSortBy} value="created_at">
+          Date
+        </ToggleButton>
+        <ToggleButton onClick={handleSortBy} value="comment_count">
+          Comment Count
+        </ToggleButton>
+        <ToggleButton onClick={handleSortBy} value="votes">
+          Votes
+        </ToggleButton>
+      </Stack>
+
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Typography component="h1">Order By:</Typography>
+      </Box>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        justifyContent="center"
+      >
+        <ToggleButton onClick={handleOrder} value="asc">
+          Ascending
+        </ToggleButton>
+        <ToggleButton onClick={handleOrder} value="desc">
+          Descending
+        </ToggleButton>
+      </Stack>
 
       <ImageList
         cols={1}
@@ -113,7 +124,12 @@ function TopicPage(topics) {
             />
             <ImageListItemBar
               title={article.title}
-              subtitle={`${article.author}`}
+              subtitle={`author: ${article.author} | 
+              written: ${new Date(
+                article.created_at
+              ).toDateString()} | votes: ${article.votes} | comments: ${
+                article.comment_count
+              }`}
               actionIcon={
                 <IconButton aria-label={`read ${article.title}`}>
                   <a href={`/articles/${article.article_id}`}>

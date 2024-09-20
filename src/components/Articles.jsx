@@ -120,7 +120,7 @@ function Articles({ loggedInUser, topics }) {
             />
             <ImageListItemBar
               title={article.title}
-              subtitle={`author: ${article.author}
+              subtitle={`author: ${article.author} | 
               written: ${new Date(
                 article.created_at
               ).toDateString()} | votes: ${article.votes} | comments: ${
